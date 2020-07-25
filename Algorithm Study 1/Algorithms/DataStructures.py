@@ -115,7 +115,7 @@ class SinglyLinkedList :
             print("%dth data : " %idx, node.data)
             return node
         
-    def AddNode(self, data, idx = -1) :
+    def AddNode(self, data, idx = -1) : #idx에 아무것도 안들어오면 idx = -1
         if self.is_empty() :
             self.AddNode_AtFirst(data)
             
