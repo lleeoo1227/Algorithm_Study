@@ -1,3 +1,3 @@
 # Algorithm_Study
 
-* Linked list, Queue, Stack, 
+* Linked list, Queue, Stack, Tree
