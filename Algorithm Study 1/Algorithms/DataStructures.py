@@ -112,7 +112,6 @@ class SinglyLinkedList :
             while count < idx :
                 node = node.next
                 count += 1
-            print("%dth data : " %idx, node.data)
             return node
         
     def AddNode(self, data, idx = -1) : #idx에 아무것도 안들어오면 idx = -1
@@ -137,6 +136,7 @@ class SinglyLinkedList :
         node = self.head
         self.head = node.next
         self.len -= 1
+        print("Deleted node's data : ", node.data)
         del node
             
     def DeleteNode(self, idx = -1) :
@@ -150,14 +150,10 @@ class SinglyLinkedList :
             self.DeleteNode_Head()
             
         else :
-            count = 0
-            node = self.head
-            while count < idx - 1 :
-                node = node.next
-                count += 1 
+            node = self.SelectNode(idx - 1)
             del_node = node.next
             node.next = node.next.next
-            print(del_node.data)
+            print("Deleted node's data : ", del_node.data)
             self.len -= 1
             del del_node
             
@@ -175,19 +171,23 @@ class CircularlyLinkedList :
         self.len = 1
         
     def __str__(self):
-        print_list = '[ '
-        node = self.head
-        if self.len == 1 :
-            print_list += str(node.data)
-        else :
-            while True:
+        if self.len == 0 :
+            print_list = "List is EMPTY"
+            return print_list
+        else:
+            print_list = '[ '
+            node = self.head
+            if self.len == 1 :
                 print_list += str(node.data)
-                if node.next == self.head :
-                    break
-                node = node.next
-                print_list += ', '
-        print_list += ' ]'
-        return print_list
+            else :
+                while True:
+                    print_list += str(node.data)
+                    if node.next == self.head :
+                        break
+                    node = node.next
+                    print_list += ', '
+            print_list += ' ]'
+            return print_list
         
     def is_empty(self) :
         if self.len == 0 :
@@ -244,7 +244,6 @@ class CircularlyLinkedList :
             while count < idx :
                 node = node.next
                 count += 1
-            print("%dth data : " %idx, node.data)
             return node
         
     def AddNode(self, data, idx = -1) : #idx에 아무것도 안들어오면 idx = -1
@@ -270,6 +269,7 @@ class CircularlyLinkedList :
         self.head = node.next
         self.tail.next = self.head
         self.len -= 1
+        print("Deleted node's data : ", node.data)
         del node
             
     def DeleteNode(self, idx = -1) :
@@ -290,9 +290,162 @@ class CircularlyLinkedList :
                 count += 1 
             del_node = node.next
             node.next = node.next.next
-            print(del_node.data)
+            print("Deleted node's data : ", del_node.data)
             self.len -= 1
             del del_node
             
     def List_Size(self) :
         return self.len
+    
+    
+class Node_DLL :
+    def __init__(self, data) :
+        self.data = data
+        self.next = None
+        self.prev = None
+        
+
+class DoublyLinkedList :
+    def __init__(self, data) :
+        new_node = Node_DLL(data)
+        self.head = Node_DLL(None)
+        self.tail = Node_DLL(None)
+        self.head.prev = None
+        self.tail.next = None
+        self.node = new_node
+        self.node.prev = self.head
+        self.node.next = self.tail
+        self.head.next = self.node
+        self.tail.prev = self.node
+        self.len = 1
+        
+    def __str__(self):
+        if self.len == 0 :
+            print_list = "List is EMPTY"
+            return print_list
+        else :
+            print_list = '[ '
+            node = self.head.next
+            while True:
+                print_list += str(node.data)
+                if node.next == self.tail:
+                    break
+                node = node.next
+                print_list += ', '
+            print_list += ' ]'
+            return print_list
+        
+    def is_empty(self) :
+        if self.len == 0 :
+            return True
+        else :
+            return False
+        
+    def AddNode_AtFirst(self, data) :
+        new_node = Node_DLL(data)
+        if self.is_empty() :
+            self.node = new_node
+            self.node.prev = self.head
+            self.node.next = self.tail
+            self.head.next = self.node
+            self.tail.prev = self.node
+                        
+        else :
+            temp_node = self.head.next
+            self.head.next = new_node
+            self.head.next.prev = self.head
+            self.head.next.next = temp_node
+            temp_node.prev = self.head.next
+            
+        self.len += 1
+        
+    def AddNode_AtLast(self, data) :
+        new_node = Node_DLL(data)
+        if self.is_empty() :
+            self.node = new_node
+            self.node.prev = self.head
+            self.node.next = self.tail
+            
+        else :
+            node = self.tail.prev
+            node.next = new_node
+            node.next.prev = node
+            node.next.next = self.tail
+            self.tail.prev = node.next
+            
+        self.len += 1
+        
+    def SelectNode(self, idx) :
+        if idx >= self.len :
+            print("Error : Overflow")
+            
+        elif self.is_empty() :
+            print("Eror : Underflow")
+                        
+        else :
+            if idx + 1 <= self.len / 2 :
+                node = self.head
+                count = 0
+                while count <= idx :
+                    node = node.next
+                    count += 1
+                return node
+            
+            else :
+                node = self.tail
+                count = 0
+                while count < self.len - idx :
+                    node = node.prev
+                    count += 1
+                return node
+        
+    def AddNode(self, data, idx = -1) : #idx에 아무것도 안들어오면 idx = -1
+        if self.is_empty() :
+            self.AddNode_AtFirst(data)
+            
+        elif idx == -1 :
+            self.AddNode_AtFirst(data)
+        
+        elif idx >= self.len :
+            self.AddNode_AtLast(data)
+            
+        else :
+            new_node = Node_DLL(data)
+            node = self.SelectNode(idx - 1)
+            temp_node = node.next
+            node.next = new_node
+            node.next.next = temp_node
+            node.next.prev = node
+            temp_node.prev = node.next
+            self.len += 1
+            
+    def DeleteNode_Head(self) :
+        node = self.head.next
+        self.head.next = node.next
+        self.head.next.prev = self.head
+        self.len -= 1
+        print("Deleted node's data : ", node.data)
+        del node
+            
+    def DeleteNode(self, idx = -1) :
+        if self.is_empty() :
+            print("Eror : Underflow")
+        
+        elif idx >= self.len :
+            print("Error : Overflow")
+            
+        elif idx == 0 or idx == -1 :
+            self.DeleteNode_Head()
+            
+        else :
+            node = self.SelectNode(idx - 1)
+            del_node = node.next
+            node.next = del_node.next
+            node.next.prev = node
+            self.len -= 1
+            print("Deleted node's data : ", del_node.data)
+            del del_node
+            
+    def List_Size(self) :
+        return self.len
+
