@@ -1,3 +1,26 @@
+class Queue :
+    def __init__(self) :
+        self.que = []
+        self.len = 0
+            
+    def enqueue(self, data) :
+        self.que.append(data)
+        self.len += 1
+    
+    def dequeue(self, data) :
+        self.que.pop(0)
+        print("0th element of Queue : ", self.que.pop(0))
+        self.len -= 1
+    
+    def List_Size(self) :
+        return self.len
+    
+    def show(self) :
+        return self.que
+    
+    
+    
+
 class CircularQueue :
     def __init__(self, size) :
         self.size = size 
