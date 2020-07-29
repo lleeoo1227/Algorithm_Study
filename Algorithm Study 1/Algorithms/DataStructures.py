@@ -212,13 +212,13 @@ class CircularlyLinkedList :
             self.head = new_node
             self.tail = new_node
             self.head.next = self.tail
-            self.tail.next = self.head
+            #self.tail.next = self.head
                         
         else :
             temp_node = self.head
             self.head = new_node
             self.head.next = temp_node
-            #self.tail.next = self.head
+            self.tail.next = self.head
         self.len += 1
         
     def AddNode_AtLast(self, data) :
