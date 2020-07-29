@@ -53,22 +53,25 @@ class Node :
         
 
 class SinglyLinkedList :
-    def __init__(self, data) :
-        new_node = Node(data)
-        self.head = new_node
-        self.len = 1
+    def __init__(self) :
+        self.head = None
+        self.len = 0
         
     def __str__(self):
-        print_list = '[ '
-        node = self.head
-        while True:
-            print_list += str(node.data)
-            if node.next == None:
-                break
-            node = node.next
-            print_list += ', '
-        print_list += ' ]'
-        return print_list
+        if self.len == 0 :
+            print_list = "List is EMPTY"
+            return print_list
+        else :
+            print_list = '[ '
+            node = self.head
+            while True:
+                print_list += str(node.data)
+                if node.next == None:
+                    break
+                node = node.next
+                print_list += ', '
+            print_list += ' ]'
+            return print_list
         
     def is_empty(self) :
         if self.len == 0 :
@@ -133,11 +136,20 @@ class SinglyLinkedList :
             self.len += 1
             
     def DeleteNode_Head(self) :
-        node = self.head
-        self.head = node.next
-        self.len -= 1
-        print("Deleted node's data : ", node.data)
-        del node
+        if self.is_empty() :
+            print("Error : List is EMPTY")
+        
+        elif self.len == 1 :
+            print("Deleted node's data : ", self.head.data)
+            self.head = None
+            self.len = 0
+            
+        else :
+            node = self.head
+            self.head = node.next
+            self.len -= 1
+            print("Deleted node's data : ", node.data)
+            del node
             
     def DeleteNode(self, idx = -1) :
         if self.is_empty() :
@@ -164,11 +176,10 @@ class SinglyLinkedList :
     
 
 class CircularlyLinkedList :
-    def __init__(self, data) :
-        new_node = Node(data)
-        self.head = new_node
+    def __init__(self) :
+        self.head = None
         self.tail = None
-        self.len = 1
+        self.len = 0
         
     def __str__(self):
         if self.len == 0 :
@@ -199,31 +210,25 @@ class CircularlyLinkedList :
         new_node = Node(data)
         if self.is_empty() :
             self.head = new_node
-            
-        elif self.tail == None :
-            self.tail = self.head
-            self.head = new_node
+            self.tail = new_node
             self.head.next = self.tail
             self.tail.next = self.head
-            
                         
         else :
             temp_node = self.head
             self.head = new_node
             self.head.next = temp_node
-            self.tail.next = self.head
+            #self.tail.next = self.head
         self.len += 1
         
     def AddNode_AtLast(self, data) :
         new_node = Node(data)
         if self.is_empty() :
             self.head = new_node
-            
-        elif self.tail == None :
             self.tail = new_node
             self.head.next = self.tail
-            self.tail.next = self.head
-            
+            #self.tail.next = self.head
+ 
         else :
             temp_node = self.tail
             self.tail = new_node
@@ -265,12 +270,22 @@ class CircularlyLinkedList :
             self.len += 1
             
     def DeleteNode_Head(self) :
-        node = self.head
-        self.head = node.next
-        self.tail.next = self.head
-        self.len -= 1
-        print("Deleted node's data : ", node.data)
-        del node
+        if self.is_empty() :
+            print("Eror : List is EMPTY")
+        
+        elif self.len == 1 :
+            print("Deleted node's data : ", self.head.data)
+            self.head = None
+            self.tail = None
+            self.len = 0
+        
+        else :
+            node = self.head
+            self.head = node.next
+            self.tail.next = self.head
+            self.len -= 1
+            print("Deleted node's data : ", node.data)
+            del node
             
     def DeleteNode(self, idx = -1) :
         if self.is_empty() :
@@ -298,6 +313,7 @@ class CircularlyLinkedList :
         return self.len
     
     
+
 class Node_DLL :
     def __init__(self, data) :
         self.data = data
@@ -306,18 +322,12 @@ class Node_DLL :
         
 
 class DoublyLinkedList :
-    def __init__(self, data) :
-        new_node = Node_DLL(data)
+    def __init__(self) :
         self.head = Node_DLL(None)
         self.tail = Node_DLL(None)
         self.head.prev = None
         self.tail.next = None
-        self.node = new_node
-        self.node.prev = self.head
-        self.node.next = self.tail
-        self.head.next = self.node
-        self.tail.prev = self.node
-        self.len = 1
+        self.len = 0
         
     def __str__(self):
         if self.len == 0 :
@@ -365,6 +375,8 @@ class DoublyLinkedList :
             self.node = new_node
             self.node.prev = self.head
             self.node.next = self.tail
+            self.head.next = self.node
+            self.tail.prev = self.node
             
         else :
             node = self.tail.prev
@@ -420,12 +432,22 @@ class DoublyLinkedList :
             self.len += 1
             
     def DeleteNode_Head(self) :
-        node = self.head.next
-        self.head.next = node.next
-        self.head.next.prev = self.head
-        self.len -= 1
-        print("Deleted node's data : ", node.data)
-        del node
+        if self.is_empty() :
+            print("Error : List is EMPTY")
+        
+        elif self.len == 1 :
+            node = self.head.next
+            print("Deleted noed's data : ", node.data)
+            self.len = 0
+            del node
+            
+        else :
+            node = self.head.next
+            self.head.next = node.next
+            self.head.next.prev = self.head
+            self.len -= 1
+            print("Deleted node's data : ", node.data)
+            del node
             
     def DeleteNode(self, idx = -1) :
         if self.is_empty() :
