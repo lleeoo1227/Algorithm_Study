@@ -494,3 +494,102 @@ class DoublyLinkedList :
     def List_Size(self) :
         return self.len
 
+
+class Node_Tree :
+    def __init__(self, data) :
+        self.data = data
+        self.left = None
+        self.right = None
+    
+
+class BST :
+    def __init__(self) :
+        self.root = None
+        
+    def insert(self, data) :
+        new_node = Node_Tree(data)
+        if self.root == None :
+            self.root = new_node
+            
+        else :
+            current_node = self.root
+            while True :
+                if new_node.data < current_node.data :
+                    if current_node.left != None :
+                        current_node = current_node.left
+                    else :
+                        current_node.left = new_node
+                        break
+                        
+                else :
+                    if current_node.right != None :
+                        current_node = current_node.right
+                    else :
+                        current_node.right = new_node
+                        break
+        
+    def get_min(self, current) :
+        while current.left != None :
+            current = current.left
+        return current
+    
+    def delete(self, data) :
+        self.root = self.delete_node(self.root, data)
+        
+    def delete_node(self, node, data) :
+        if node == None :
+            return False
+        
+        if data == node.data :
+            if node.left == None and node.right == None :
+                return None
+            
+            elif node.left == None :
+                return node.right
+            
+            elif node.right == None :
+                return node.left
+            
+            else :
+                temp = self.get_min(node.right)
+                node.data = temp.data
+                node.right = self.delete_node(node.right, temp.data)
+                return node
+        
+        elif data < node.data :
+            node.left = self.delete_node(node.left, data)
+            return node
+        
+        else :
+            node.right = self.delete_node(node.right, data)
+            return node
+        
+    def pre_order_traversal(self) :
+        def _pre_order_traversal(root) :
+            if root == None :
+                pass
+            else :
+                print(root.data)
+                _pre_order_traversal(root.left)
+                _pre_order_traversal(root.right)
+        _pre_order_traversal(self.root)
+        
+    def in_order_traversal(self) :
+        def _in_order_traversal(root) :
+            if root == None :
+                pass
+            else :
+                _in_order_traversal(root.left)
+                print(root.data)
+                _in_order_traversal(root.right)
+        _in_order_traversal(self.root)
+        
+    def post_order_traversal(self) :
+        def _post_order_traversal(root) :
+            if root == None :
+                pass
+            else :
+                _post_order_traversal(root.left)
+                _post_order_traversal(root.right)
+                print(root.data)
+        _post_order_traversal(self.root)
