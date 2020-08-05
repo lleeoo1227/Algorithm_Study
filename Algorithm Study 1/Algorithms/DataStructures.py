@@ -495,16 +495,16 @@ class DoublyLinkedList :
         return self.len
 
 
+
 class Node_Tree :
     def __init__(self, data) :
         self.data = data
-        self.left = None
-        self.right = None
-    
-
+        self.left, self.right = None, None
+        
 class BST :
     def __init__(self) :
         self.root = None
+        #self.result = []
         
     def insert(self, data) :
         new_node = Node_Tree(data)
@@ -514,7 +514,7 @@ class BST :
         else :
             current_node = self.root
             while True :
-                if new_node.data < current_node.data :
+                if data < current_node.data :
                     if current_node.left != None :
                         current_node = current_node.left
                     else :
@@ -527,43 +527,113 @@ class BST :
                     else :
                         current_node.right = new_node
                         break
-        
-    def get_min(self, current) :
-        while current.left != None :
-            current = current.left
-        return current
-    
+                        
     def delete(self, data) :
-        self.root = self.delete_node(self.root, data)
+        self.current = self.root
+        self.parent = self.root
         
-    def delete_node(self, node, data) :
-        if node == None :
+        if self.root == None :
             return False
         
-        if data == node.data :
-            if node.left == None and node.right == None :
-                return None
-            
-            elif node.left == None :
-                return node.right
-            
-            elif node.right == None :
-                return node.left
-            
-            else :
-                temp = self.get_min(node.right)
-                node.data = temp.data
-                node.right = self.delete_node(node.right, temp.data)
-                return node
-        
-        elif data < node.data :
-            node.left = self.delete_node(node.left, data)
-            return node
-        
         else :
-            node.right = self.delete_node(node.right, data)
-            return node
+            while True :
+                if self.current.data == data :
+                    break
+                    
+                else :
+                    if data < self.current.data :
+                        if self.current.left == None :
+                            return "No Data to Delete"
+                        else :
+                            self.parent = self.current
+                            self.current = self.current.left
+                    else :
+                        if self.current.right == None :
+                            return "No Data to Delete"
+                        else :
+                            self.parent = self.current
+                            self.current = self.current.right
+                        
+        #case1 - no child
         
+        if self.current.left == None and self.current.right == None :
+            if self.current.data < self.parent.data :
+                self.parent.left = None
+            else :
+                self.parent.right = None
+                
+        #case2 - 1 child
+        
+        elif self.current.left != None and self.current.right == None :
+            if self.current.data < self.parent.data :
+                self.parent.left = self.current.left
+            else :
+                self.parent.right = self.current.left
+                
+        elif self.current.left == None and self.current.right != None :
+            if self.current.data < self.parent.data :
+                self.parent.left = self.current.right
+            else :
+                self.parent.right = self.current.right
+                
+        #case3 - 2 children
+        
+        elif self.current.left and self.current.right :
+            if self.current == self.root :
+                temp_left = self.current.left
+                self.change_node = self.current.right
+                self.change_node_parent = self.current.right
+                stack = []
+                while self.change_node.left != None :
+                    self.change_node_parent = self.change_node
+                    stack.append(self.change_node_parent)
+                    self.change_node = self.change_node.left
+                self.root = self.change_node
+                last = self.change_node.right
+                while stack :
+                    node = stack.pop()
+                    node.left = last
+                    last = node
+                self.root.left = temp_left
+                self.root.right = last
+                
+            elif self.current.data < self.parent.data :
+                temp_left = self.current.left
+                self.change_node = self.current.right
+                self.change_node_parent = self.current.right
+                stack = []
+                while self.change_node.left != None :
+                    self.change_node_parent = self.change_node
+                    stack.append(self.change_node_parent)
+                    self.change_node = self.change_node.left
+                self.parent.left = self.change_node
+                last = self.change_node.right
+                while stack :
+                    node = stack.pop()
+                    node.left = last
+                    last = node
+                self.parent.left.left = temp_left
+                self.parent.left.right = last
+            
+            elif self.current.data >= self.parent.data :
+                temp_left = self.current.left
+                self.change_node = self.current.right
+                self.change_node_parent = self.current.right
+                stack = []
+                while self.change_node.left != None :
+                    self.change_node_parent = self.change_node
+                    stack.append(self.change_node_parent)
+                    self.change_node = self.change_node.left
+                self.parent.right = self.change_node
+                last = self.change_node.right
+                while stack :
+                    node = stack.pop()
+                    node.left = last
+                    last = node
+                self.parent.right.left = temp_left
+                self.parent.right.right = last
+
+                    
     def pre_order_traversal(self) :
         def _pre_order_traversal(root) :
             if root == None :
