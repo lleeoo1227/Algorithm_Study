@@ -504,7 +504,6 @@ class Node_Tree :
 class BST :
     def __init__(self) :
         self.root = None
-        #self.result = []
         
     def insert(self, data) :
         new_node = Node_Tree(data)
