@@ -634,31 +634,39 @@ class BST :
 
                     
     def pre_order_traversal(self) :
+        self.result = []
         def _pre_order_traversal(root) :
             if root == None :
                 pass
             else :
-                print(root.data)
+                self.result.append(root.data)
                 _pre_order_traversal(root.left)
                 _pre_order_traversal(root.right)
+                return self.result
         _pre_order_traversal(self.root)
+        return self.result
         
     def in_order_traversal(self) :
+        self.result = []
         def _in_order_traversal(root) :
             if root == None :
                 pass
             else :
                 _in_order_traversal(root.left)
-                print(root.data)
+                self.result.append(root.data)
                 _in_order_traversal(root.right)
         _in_order_traversal(self.root)
+        return self.result
         
     def post_order_traversal(self) :
+        self.result = []
         def _post_order_traversal(root) :
             if root == None :
                 pass
             else :
                 _post_order_traversal(root.left)
                 _post_order_traversal(root.right)
-                print(root.data)
+                self.result.append(root.data)
+                return self.result
         _post_order_traversal(self.root)
+        return self.result
