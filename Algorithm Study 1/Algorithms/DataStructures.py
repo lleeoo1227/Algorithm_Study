@@ -670,3 +670,19 @@ class BST :
                 return self.result
         _post_order_traversal(self.root)
         return self.result
+    
+    def level_order_traversal(self) :
+        self.result = []
+        def _level_order_traversal(root) :
+            queue = [root]
+            while queue :
+                node = queue.pop(0)
+                if node :
+                    self.result.append(node.data)
+                    if node.left :
+                        queue.append(node.left)
+                    if node.right :
+                        queue.append(node.right)
+            return self.result
+        _level_order_traversal(self.root)
+        return self.result
